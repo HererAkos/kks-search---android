@@ -3424,7 +3424,6 @@
         function accordionPopLast() {
             if (accordionOpenStack.length === 0) return false;
             const last = accordionOpenStack.pop();
-            // Close it
             const el = last.element;
             if (el && el.classList.contains('acc-expanded')) {
                 el.style.maxHeight = el.scrollHeight + 'px';
@@ -3432,11 +3431,14 @@
                     el.style.maxHeight = '0';
                     el.classList.remove('acc-expanded');
                 });
-                // Find the toggle button chevron
                 const header = el.previousElementSibling;
                 if (header) {
                     const chevron = header.querySelector('.acc-chevron');
                     if (chevron) chevron.classList.remove('acc-open');
+                    // Scroll back to the header after the close animation
+                    setTimeout(() => {
+                        header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 50);
                 }
             }
             return true;
